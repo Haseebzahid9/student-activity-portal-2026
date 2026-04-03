@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Activity Portal 2026 – FAST CFD</title>
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --nu-green: #006633;
+      --nu-gold:  #c8a84b;
+      --nu-dark:  #0d1117;
+      --nu-mid:   #1a2332;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: #f5f7fa; color: #1a2332; }
+    h1,h2,h3,h4,.display-4,.display-5 { font-family: 'Syne', sans-serif; }
+
+    /* ── NAVBAR ── */
+    .navbar { background: var(--nu-dark) !important; border-bottom: 3px solid var(--nu-gold); }
+    .navbar-brand { font-family:'Syne',sans-serif; font-size:1.3rem; color:var(--nu-gold)!important; letter-spacing:.04em; }
+    .nav-link { color: #cdd6e0 !important; font-weight:500; transition:.2s; }
+    .nav-link:hover { color:var(--nu-gold)!important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--nu-dark) 0%, var(--nu-mid) 60%, #0e2a18 100%);
+      color:#fff;
+      padding: 96px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content:'';
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(200,168,75,.13) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display:inline-block;
+      background: rgba(200,168,75,.15);
+      border:1px solid rgba(200,168,75,.5);
+      color:var(--nu-gold);
+      font-size:.78rem;
+      font-weight:600;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:4px 14px;
+      border-radius:999px;
+      margin-bottom:18px;
+    }
+    .hero h1 { font-size:clamp(2.2rem,5vw,3.8rem); line-height:1.1; }
+    .hero p  { font-size:1.1rem; color:#a8b8c8; max-width:520px; }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size:2rem;
+      font-family:'Syne',sans-serif;
+      position:relative;
+      display:inline-block;
+    }
+    .section-title::after {
+      content:'';
+      display:block;
+      height:4px;
+      width:50px;
+      background:var(--nu-gold);
+      border-radius:2px;
+      margin-top:6px;
+    }
+
+    /* ── EVENT CARDS ── */
+    .event-card {
+      border:none;
+      border-radius:16px;
+      box-shadow:0 4px 24px rgba(0,0,0,.09);
+      transition: transform .25s, box-shadow .25s;
+      overflow:hidden;
+    }
+    .event-card:hover { transform:translateY(-6px); box-shadow:0 12px 36px rgba(0,102,51,.18); }
+    .event-card .card-header {
+      height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.4rem;
+    }
+
+    /* ── BANNER ── */
+    .full-banner {
+      background: linear-gradient(90deg, var(--nu-green), #004422);
+      color:#fff;
+      border-radius:16px;
+      padding:40px 32px;
+    }
+
+    /* ── SIDEBAR SECTION ── */
+    .sidebar-box { background:var(--nu-dark); color:#fff; border-radius:12px; padding:24px; }
+    .main-content-box { background:#fff; border-radius:12px; padding:28px; box-shadow:0 2px 16px rgba(0,0,0,.07); }
+
+    /* ── QUICK ACCESS ── */
+    .qa-btn {
+      display:block;
+      width:100%;
+      padding:14px 18px;
+      border-radius:10px;
+      background:#fff;
+      border:1.5px solid #e0e7ef;
+      font-weight:600;
+      color:var(--nu-dark);
+      text-decoration:none;
+      transition:.2s;
+      margin-bottom:10px;
+    }
+    .qa-btn:hover { background:var(--nu-green); color:#fff; border-color:var(--nu-green); }
+
+    /* ── SOCIETY CARDS ── */
+    .society-card { border-radius:14px; overflow:hidden; border:none; box-shadow:0 2px 18px rgba(0,0,0,.08); }
+    .society-card:hover { box-shadow:0 8px 32px rgba(0,102,51,.16); transform:translateY(-4px); transition:.25s; }
+
+    /* ── TEAM CARDS ── */
+    .team-avatar {
+      width:80px; height:80px;
+      border-radius:50%;
+      object-fit:cover;
+      background:var(--nu-green);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      color:#fff;
+      font-family:'Syne',sans-serif;
+      margin:0 auto 12px;
+    }
+
+    /* ── FOOTER ── */
+    footer { background:var(--nu-dark); color:#8899aa; border-top:3px solid var(--nu-gold); }
+    footer a { color:var(--nu-gold); text-decoration:none; }
+    footer a:hover { text-decoration:underline; }
+
+    /* ── HOVER UTILITY (Task 10) ── */
+    .card-hover-lift { transition:transform .25s ease, box-shadow .25s ease; }
+    .card-hover-lift:hover { transform:translateY(-8px); box-shadow:0 16px 40px rgba(0,0,0,.15)!important; }
+
+    /* ── CALENDAR TABLE ── */
+    .cal-day { width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:600; cursor:pointer; }
+    .cal-day.event-day { background:var(--nu-green); color:#fff; }
+    .cal-day.today { border:2px solid var(--nu-gold); }
+
+    /* ── LEADERBOARD ── */
+    .lb-row:hover { background:rgba(0,102,51,.06); }
+    .lb-rank { font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     TASK 3 & 9 — NAVBAR + LOGIN MODAL BUTTON
+════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+       FAST CFD Portal
+    </a>
+    <button class="navbar-toggler border-secondary" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+        <li class="nav-item"><a class="nav-link" href="#register">Register</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="#societies">Societies</a></li>
+        <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+      </ul>
+      <div class="d-flex gap-2 align-items-center">
+        <span class="badge bg-success">Spring 2026</span>
+        <!-- TASK 9: Login button → opens modal, no custom JS -->
+        <button class="btn btn-outline-warning btn-sm fw-bold"
+                data-bs-toggle="modal" data-bs-target="#loginModal">
+          🔐 Login
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- TASK 9: Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px; overflow:hidden;">
+      <div class="modal-header" style="background:var(--nu-dark); border:none;">
+        <h5 class="modal-title text-white fw-bold" id="loginModalLabel" style="font-family:'Syne',sans-serif;">
+          🎓 Student Login
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <p class="text-muted small mb-3">Use your FAST CFD student credentials.</p>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Roll Number</label>
+          <input type="text" class="form-control" placeholder="e.g. 23F-0644" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" class="form-control" placeholder="••••••••" />
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="rememberMe" />
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success fw-bold px-4">Login →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     TASK 1 — HERO (container + container-fluid)
+════════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <!-- Task 1: .container -->
+  <div class="container position-relative">
+    <div class="hero-badge">FAST-NU · Chiniot-Faisalabad Campus · 2026</div>
+    <h1 class="fw-bold mb-3">
+      Student Activity<br />
+      <span style="color:var(--nu-gold);">Portal 2026</span>
+    </h1>
+    <p class="mb-4">
+      Explore events, join societies, register for competitions, and be part of
+      the vibrant FAST CFD community. Your campus life starts here.
+    </p>
+    <!-- TASK 5: Button Group -->
+    <div class="btn-group mb-4" role="group">
+      <a href="#events" class="btn btn-success fw-bold px-4">Explore Events</a>
+      <a href="#register" class="btn btn-outline-warning fw-bold px-4">Register Now</a>
+    </div>
+    <!-- TASK 5: Alert -->
+    <div class="alert alert-warning d-inline-flex align-items-center gap-2 mt-2" role="alert" style="border-radius:10px; max-width:480px;">
+      <strong>📢 New!</strong> Daira Arts Expo registrations are now open!
+      <span class="badge bg-danger ms-1">Deadline: Apr 15</span>
+    </div>
+  </div>
+
+  <!-- Task 1: .container-fluid for full-width strip -->
+  <div class="container-fluid mt-5" style="background:rgba(255,255,255,.05); padding:16px 0;">
+    <div class="container d-flex gap-4 flex-wrap">
+      <div class="text-center px-3">
+        <div class="fw-bold" style="font-size:2rem; color:var(--nu-gold); font-family:'Syne',sans-serif;">12+</div>
+        <div class="text-light small">Active Societies</div>
+      </div>
+      <div class="text-center px-3">
+        <div class="fw-bold" style="font-size:2rem; color:var(--nu-gold); font-family:'Syne',sans-serif;">600+</div>
+        <div class="text-light small">Students</div>
+      </div>
+      <div class="text-center px-3">
+        <div class="fw-bold" style="font-size:2rem; color:var(--nu-gold); font-family:'Syne',sans-serif;">8</div>
+        <div class="text-light small">Upcoming Events</div>
+      </div>
+      <div class="text-center px-3">
+        <div class="fw-bold" style="font-size:2rem; color:var(--nu-gold); font-family:'Syne',sans-serif;">BSCS 6F </div>
+        <div class="text-light small">Current Sections</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     TASK 4 — TYPOGRAPHY & COLORS
+════════════════════════════════════════════ -->
+
+<section class="container mt-5 mb-4">
+  <h2 class="h1 text-success section-title">About the Portal</h2>
+  <p class="text-primary mt-3 fw-semibold">Connecting students with opportunities across FAST CFD campus.</p>
+  <blockquote class="blockquote mt-3 ps-3" style="border-left:4px solid var(--nu-gold);">
+    <p class="mb-1">"Education is not preparation for life; education is life itself."</p><br>
+    <footer class="blockquote-footer text-danger">John Dewey, <cite>as adopted by FAST student body</cite></footer>
+  </blockquote>
+  <p class="text-danger mt-3"><strong>Important:</strong> All activities are subject to university code of conduct.</p>
+  <p class="text-success">✅ Participate, grow, and make memories that last a lifetime!</p>
+</section>  
+
+
+<!-- ════════════════════════════════════════════
+     TASK 2 — RESPONSIVE GRID: 4 EVENT CARDS
+════════════════════════════════════════════ -->
+<section id="events" class="container-fluid py-5" style="background:#eef2f7;">
+  <div class="container">
+    <h2 class="section-title mb-2">Featured Events</h2>
+    <p class="text-muted mb-4">Click <em>Learn More</em> on any card to see the full event details.</p>
+    <div class="row g-4">
+
+      <!-- Coding -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card event-card h-100">
+          <div class="card-header" style="background:linear-gradient(135deg,#004d99,#0066cc);">💻</div>
+          <div class="card-body">
+            <span class="badge bg-primary mb-2">Coding Society</span>
+            <h5 class="card-title fw-bold">HackFAST 2026</h5>
+            <p class="card-text text-muted small">
+              A 24-hour hackathon where teams of up to 4 build innovative solutions to real-world problems. Open to all BSCS students.
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0 pb-3">
+            <button class="btn btn-primary w-100 fw-semibold"
+                    data-bs-toggle="modal" data-bs-target="#eventModal">Learn More</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gaming -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card event-card h-100">
+          <div class="card-header" style="background:linear-gradient(135deg,#6f00e0,#9b30ff);">🎮</div>
+          <div class="card-body">
+            <span class="badge bg-warning text-dark mb-2">Gaming Society</span>
+            <h5 class="card-title fw-bold">CFD Gaming League</h5>
+            <p class="card-text text-muted small">
+              Compete in VALORANT, FIFA, and Chess tournaments. Weekly qualifiers lead up to the grand championship in May 2026.
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0 pb-3">
+            <button class="btn btn-warning w-100 fw-semibold text-dark"
+                    data-bs-toggle="modal" data-bs-target="#eventModal">Learn More</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sports -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card event-card h-100">
+          <div class="card-header" style="background:linear-gradient(135deg,#006633,#009933);">⚽</div>
+          <div class="card-body">
+            <span class="badge bg-success mb-2">Sports Society</span>
+            <h5 class="card-title fw-bold">Inter-Section Sports Gala</h5>
+            <p class="card-text text-muted small">
+              Cricket, football, badminton, and table tennis. Represent 6F in the annual campus-wide sports competition.
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0 pb-3">
+            <button class="btn btn-success w-100 fw-semibold"
+                    data-bs-toggle="modal" data-bs-target="#eventModal">Learn More</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arts -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card event-card h-100">
+          <div class="card-header" style="background:linear-gradient(135deg,#b8400a,#e85d1a);">🎨</div>
+          <div class="card-body">
+            <span class="badge bg-danger mb-2">Arts Society</span>
+            <h5 class="card-title fw-bold">Daira Arts Expo</h5>
+            <p class="card-text text-muted small">
+              Showcase painting, digital art, photography, and poetry. FAST CFD's premier cultural event celebrating student creativity.
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0 pb-3">
+            <button class="btn btn-danger w-100 fw-semibold"
+                    data-bs-toggle="modal" data-bs-target="#eventModal">Learn More</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TASK 5: Event Modal (shared) -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px;">
+      <div class="modal-header" style="background:var(--nu-green); border:none;">
+        <h5 class="modal-title text-white" style="font-family:'Syne',sans-serif;">🎉 Event Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>This event is organized by FAST CFD student societies. For full details and registration, visit the <strong>Register</strong> section or email us at <a href="mailto:fastcfd@nu.edu.pk">fastcfd@nu.edu.pk</a>.</p>
+        <div class="alert alert-success">Limited seats — register early to secure your spot!</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#register" class="btn btn-success fw-bold" data-bs-dismiss="modal">Go to Register →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     TASK 5 — COMPONENTS: Badge, Alert, Button Group
+════════════════════════════════════════════ -->
+<section class="container my-5">
+  <h2 class="section-title mb-4">Upcoming Events</h2>
+
+  <!-- Alert -->
+  <div class="alert alert-info d-flex align-items-center gap-2" role="alert">
+    <strong>📅 Reminder:</strong>&nbsp; Daira Arts Expo is on <strong>April 20, 2026</strong>. Don't miss it!
+  </div>
+
+  <!-- Badge showcase -->
+  <div class="mb-4 d-flex flex-wrap gap-2">
+    <span class="badge bg-primary fs-6 px-3 py-2">HackFAST 2026 <span class="badge bg-light text-dark ms-1">Apr 10</span></span>
+    <span class="badge bg-success fs-6 px-3 py-2">Sports Gala <span class="badge bg-light text-dark ms-1">Apr 14</span></span>
+    <span class="badge bg-danger  fs-6 px-3 py-2">Daira Arts Expo <span class="badge bg-light text-dark ms-1">Apr 20</span></span>
+    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Gaming League <span class="badge bg-dark ms-1">May 5</span></span>
+  </div>
+
+  <!-- Button Group -->
+  <div class="btn-group" role="group" aria-label="Event filters">
+    <button class="btn btn-outline-success active">All</button>
+    <button class="btn btn-outline-success">Coding</button>
+    <button class="btn btn-outline-success">Sports</button>
+    <button class="btn btn-outline-success">Arts</button>
+    <button class="btn btn-outline-success">Gaming</button>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     TASK 8 — GRID SYSTEM LOGIC: Banner + Sidebar + Content
+════════════════════════════════════════════ -->
+<section class="container mb-5">
+  <!-- Full-width banner -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="full-banner text-center">
+        <h2 class="fw-bold mb-1" style="font-family:'Syne',sans-serif;">🏆 Meet Our Clubs</h2>
+        <p class="mb-0 opacity-75">FAST CFD's vibrant student societies — join, lead, and make an impact.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar (3) + Content (9) — stacked on mobile -->
+  <div class="row g-4">
+    <div class="col-12 col-lg-3">
+      <div class="sidebar-box h-100">
+        <h5 class="fw-bold mb-3" style="color:var(--nu-gold); font-family:'Syne',sans-serif;">Quick Access</h5>
+        <a href="#calendar" class="qa-btn">📅 Event Calendar</a>
+        <a href="#leaderboard" class="qa-btn">🏅 Leaderboard</a>
+        <a href="#register" class="qa-btn">📝 My Registrations</a>
+        <a href="#societies" class="qa-btn">🔍 Club Finder</a>
+        <a href="#" class="qa-btn">📢 Announcements</a>
+        <hr style="border-color:#ffffff22;" />
+       <p class="text-light small mb-1">📧 fastcfd@nu.edu.pk</p>
+<p class="text-light small">📍 FAST-NU, Chiniot–Faisalabad</p>
+      </div>
+    </div>
+    <div class="col-12 col-lg-9">
+      <div class="main-content-box">
+        <h4 class="fw-bold mb-3" style="font-family:'Syne',sans-serif;">Featured Student Societies</h4>
+        <div class="row g-3" id="societies">
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">💻</div>
+              <h6 class="fw-bold mt-2">Coding Society</h6>
+              <p class="small text-muted">HackFAST · DSA workshops · Competitive programming</p>
+              <span class="badge bg-primary">45 members</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">⚽</div>
+              <h6 class="fw-bold mt-2">Sport Society</h6>
+              <p class="small text-muted">Cricket · Football · Badminton · Table Tennis</p>
+              <span class="badge bg-success">60 members</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">🎨</div>
+              <h6 class="fw-bold mt-2">Arts Society</h6>
+              <p class="small text-muted">Daira Arts Expo · Painting · Digital Art · Poetry</p>
+              <span class="badge bg-danger">38 members</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">🎮</div>
+              <h6 class="fw-bold mt-2">Gaming Society</h6>
+              <p class="small text-muted">VALORANT · FIFA · Chess · CFD Gaming League</p>
+              <span class="badge bg-warning text-dark">52 members</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">🎤</div>
+              <h6 class="fw-bold mt-2">Debate Society</h6>
+              <p class="small text-muted">MUNs · Oratory · Public speaking competitions</p>
+              <span class="badge bg-info text-dark">29 members</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card society-card h-100 text-center p-3">
+              <div style="font-size:2.6rem;">🤖</div>
+              <h6 class="fw-bold mt-2">AI &amp; Robotics</h6>
+              <p class="small text-muted">ML projects · Arduino · Smart systems workshops</p>
+              <span class="badge bg-dark">33 members</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     TASK 7 — FIXED BOOTSTRAP LAYOUT DEBUGGING
+     Original had col-* outside .row — fixed below
+════════════════════════════════════════════ -->
+<section class="container mb-5">
+  <h2 class="section-title mb-3">From the Student Body</h2>
+  <p class="text-muted mb-4">Voices from your peers.</p>
+  <!-- FIXED: Added .row wrapper around .col-* elements -->
+  <div class="row g-3">
+    <div class="col-12 col-md-6">
+      <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius:14px;">
+        <blockquote class="blockquote mb-0">
+          <p class="fst-italic text-muted">"The Sports Gala was the highlight of my semester. Representing 6F in cricket was unforgettable!"</p>
+          <footer class="blockquote-footer mt-2">Haseeb Zahid, <cite>BSCS 6F</cite></footer>
+        </blockquote>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius:14px;">
+        <blockquote class="blockquote mb-0">
+          <p class="fst-italic text-muted">"Daira Arts Expo gave me a platform to show my digital art to the whole campus. Truly empowering."</p>
+          <footer class="blockquote-footer mt-2">Abdullah, <cite>BSCS 6F</cite></footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     EVENT CALENDAR + LEADERBOARD
+════════════════════════════════════════════ -->
+<section class="container-fluid py-5" style="background:#eef2f7;" id="calendar">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Calendar -->
+      <div class="col-12 col-lg-5">
+        <h2 class="section-title mb-4">Event Calendar</h2>
+        <div class="card border-0 shadow-sm p-4" style="border-radius:16px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0">April 2026</h6>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary">‹</button>
+              <button class="btn btn-outline-secondary">›</button>
+            </div>
+          </div>
+          <div class="row row-cols-7 g-1 text-center mb-2">
+            <div class="col text-muted small fw-bold">Su</div>
+            <div class="col text-muted small fw-bold">Mo</div>
+            <div class="col text-muted small fw-bold">Tu</div>
+            <div class="col text-muted small fw-bold">We</div>
+            <div class="col text-muted small fw-bold">Th</div>
+            <div class="col text-muted small fw-bold">Fr</div>
+            <div class="col text-muted small fw-bold">Sa</div>
+          </div>
+          <div class="row row-cols-7 g-1 text-center">
+            <div class="col"><div class="cal-day text-muted"></div></div>
+            <div class="col"><div class="cal-day">1</div></div>
+            <div class="col"><div class="cal-day">2</div></div>
+            <div class="col"><div class="cal-day">3</div></div>
+            <div class="col"><div class="cal-day today">4</div></div>
+            <div class="col"><div class="cal-day">5</div></div>
+            <div class="col"><div class="cal-day">6</div></div>
+            <div class="col"><div class="cal-day">7</div></div>
+            <div class="col"><div class="cal-day">8</div></div>
+            <div class="col"><div class="cal-day">9</div></div>
+            <div class="col"><div class="cal-day event-day" title="HackFAST 2026">10</div></div>
+            <div class="col"><div class="cal-day">11</div></div>
+            <div class="col"><div class="cal-day">12</div></div>
+            <div class="col"><div class="cal-day">13</div></div>
+            <div class="col"><div class="cal-day event-day" title="Sports Gala">14</div></div>
+            <div class="col"><div class="cal-day">15</div></div>
+            <div class="col"><div class="cal-day">16</div></div>
+            <div class="col"><div class="cal-day">17</div></div>
+            <div class="col"><div class="cal-day">18</div></div>
+            <div class="col"><div class="cal-day">19</div></div>
+            <div class="col"><div class="cal-day event-day" title="Daira Arts Expo">20</div></div>
+            <div class="col"><div class="cal-day">21</div></div>
+            <div class="col"><div class="cal-day">22</div></div>
+            <div class="col"><div class="cal-day">23</div></div>
+            <div class="col"><div class="cal-day">24</div></div>
+            <div class="col"><div class="cal-day">25</div></div>
+            <div class="col"><div class="cal-day">26</div></div>
+            <div class="col"><div class="cal-day">27</div></div>
+            <div class="col"><div class="cal-day">28</div></div>
+            <div class="col"><div class="cal-day">29</div></div>
+            <div class="col"><div class="cal-day">30</div></div>
+          </div>
+          <div class="d-flex gap-2 mt-3">
+            <span class="badge" style="background:var(--nu-green);">● Event Day</span>
+            <span class="badge bg-light text-dark border">◌ Today</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="col-12 col-lg-7" id="leaderboard">
+        <h2 class="section-title mb-4">Leaderboard</h2>
+        <div class="card border-0 shadow-sm" style="border-radius:16px; overflow:hidden;">
+          <table class="table table-hover mb-0">
+            <thead style="background:var(--nu-dark); color:#fff;">
+              <tr>
+                <th class="ps-4">Rank</th>
+                <th>Student</th>
+                <th>Roll No.</th>
+                <th>Society</th>
+                <th class="pe-4 text-end">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="lb-row">
+                <td class="ps-4"><span class="lb-rank text-warning">🥇</span></td>
+                <td class="fw-semibold">Haseeb Zahid</td>
+                <td><span class="badge bg-light text-dark">23F-0644</span></td>
+                <td><span class="badge bg-primary">Coding</span></td>
+                <td class="pe-4 text-end fw-bold text-success">980</td>
+              </tr>
+              <tr class="lb-row">
+                <td class="ps-4"><span class="lb-rank text-secondary">🥈</span></td>
+                <td class="fw-semibold">Khuzima</td>
+                <td><span class="badge bg-light text-dark">23F-0520</span></td>
+                <td><span class="badge bg-success">Sports</span></td>
+                <td class="pe-4 text-end fw-bold text-success">940</td>
+              </tr>
+              <tr class="lb-row">
+                <td class="ps-4"><span class="lb-rank" style="color:#cd7f32;">🥉</span></td>
+                <td class="fw-semibold">Hussain</td>
+                <td><span class="badge bg-light text-dark">23F-0845</span></td>
+                <td><span class="badge bg-danger">Arts</span></td>
+                <td class="pe-4 text-end fw-bold text-success">875</td>
+              </tr>
+              <tr class="lb-row">
+                <td class="ps-4 text-muted fw-bold">4</td>
+                <td>umair</td>
+                <td><span class="badge bg-light text-dark">23F-0548</span></td>
+                <td><span class="badge bg-warning text-dark">Gaming</span></td>
+                <td class="pe-4 text-end">820</td>
+              </tr>
+              <tr class="lb-row">
+                <td class="ps-4 text-muted fw-bold">5</td>
+                <td>saqlain Malik</td>
+                <td><span class="badge bg-light text-dark">23F-0537</span></td>
+                <td><span class="badge bg-info text-dark">Debate</span></td>
+                <td class="pe-4 text-end">790</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════
+     TASK 10 — ADVANCED BOOTSTRAP CARD (UPDATED IMAGES)
+════════════════════════════════════════════ -->
+<section class="container my-5" id="societies-advanced">
+  <h2 class="section-title mb-2">Spotlight Society Cards</h2>
+  <p class="text-muted mb-4">Hover over cards to see the lift effect (pure Bootstrap utilities).</p>
+  <div class="row g-4">
+
+    <!-- HACKATHON (HACKER IMAGE) -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow text-center p-0 h-100 card-hover-lift border-0" style="border-radius:18px; overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=600&q=80"
+             class="card-img-top" alt="Hacker" style="height:180px; object-fit:cover;" />
+        <div class="card-body pt-4">
+          <span class="badge bg-primary mb-2">Coding Society</span>
+          <h5 class="card-title fw-bold">HackFAST 2026</h5>
+          <p class="card-text text-muted small">
+            Build. Break. Repeat. A 24-hour innovation marathon for FAST CFD's sharpest minds.
+          </p>
+        </div>
+        <div class="card-footer bg-white border-0 pb-4">
+          <a href="#register" class="btn btn-primary fw-semibold px-4">Register</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPORTS (GYM BOY IMAGE) -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow text-center p-0 h-100 card-hover-lift border-0" style="border-radius:18px; overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600&q=80"
+             class="card-img-top" alt="Gym Boy" style="height:180px; object-fit:cover;" />
+        <div class="card-body pt-4">
+          <span class="badge bg-success mb-2">Sport Society</span>
+          <h5 class="card-title fw-bold">Sports Gala 2026</h5>
+          <p class="card-text text-muted small">
+            Cricket, football, and more. Show your athletic spirit and compete for the CFD trophy.
+          </p>
+        </div>
+        <div class="card-footer bg-white border-0 pb-4">
+          <a href="#register" class="btn btn-success fw-semibold px-4">Register</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTS (SINGER / CONCERT IMAGE) -->
+    <div class="col-12 col-md-4">
+      <div class="card shadow text-center p-0 h-100 card-hover-lift border-0" style="border-radius:18px; overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&q=80"
+             class="card-img-top" alt="Concert Singer" style="height:180px; object-fit:cover;" />
+        <div class="card-body pt-4">
+          <span class="badge bg-danger mb-2">Arts Society</span>
+          <h5 class="card-title fw-bold">Daira Arts Expo</h5>
+          <p class="card-text text-muted small">
+            Paint, sketch, capture, and perform. Express your creativity at FAST CFD's biggest cultural event.
+          </p>
+        </div>
+        <div class="card-footer bg-white border-0 pb-4">
+          <a href="#register" class="btn btn-danger fw-semibold px-4">Register</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!--- ════════════════════════════════════
+     REGISTRATION FORM
+════════════════════════════════════════════ -->
+<section id="register" class="container-fluid py-5" style="background: linear-gradient(135deg,#006633 0%,#004422 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-lg p-4 p-md-5" style="border-radius:20px;">
+          <h2 class="section-title mb-1" style="font-family:'Syne',sans-serif;">Event Registration</h2>
+          <p class="text-muted mb-4">Fill out the form and our team will confirm your spot via email.</p>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Full Name</label>
+              <input type="text" class="form-control" placeholder="e.g. Haseeb Zahid" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Roll Number</label>
+              <input type="text" class="form-control" placeholder="e.g. 23F-0644" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Student Email</label>
+              <input type="email" class="form-control" placeholder="e.g. 23f0644@cfd.nu.edu.pk" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Section</label>
+              <select class="form-select">
+  <option value="">Select Section</option>
+
+  <!-- 1 -->
+  <option>1A</option>
+  <option>1B</option>
+  <option>1C</option>
+  <option>1D</option>
+  <option>1E</option>
+  <option>1F</option>
+
+  <!-- 2 -->
+  <option>2A</option>
+  <option>2B</option>
+  <option>2C</option>
+  <option>2D</option>
+  <option>2E</option>
+  <option>2F</option>
+
+  <!-- 3 -->
+  <option>3A</option>
+  <option>3B</option>
+  <option>3C</option>
+  <option>3D</option>
+  <option>3E</option>
+  <option>3F</option>
+
+  <!-- 4 -->
+  <option>4A</option>
+  <option>4B</option>
+  <option>4C</option>
+  <option>4D</option>
+  <option>4E</option>
+  <option>4F</option>
+
+  <!-- 5 -->
+  <option>5A</option>
+  <option>5B</option>
+  <option>5C</option>
+  <option>5D</option>
+  <option>5E</option>
+  <option>5F</option>
+
+  <!-- 6 -->
+  <option>6A</option>
+  <option>6B</option>
+  <option>6C</option>
+  <option>6D</option>
+  <option>6E</option>
+  <option>6F</option>
+
+  <!-- 7 -->
+  <option>7A</option>
+  <option>7B</option>
+  <option>7C</option>
+  <option>7D</option>
+  <option>7E</option>
+  <option>7F</option>
+
+  <!-- 8 -->
+  <option>8A</option>
+  <option>8B</option>
+  <option>8C</option>
+  <option>8D</option>
+  <option>8E</option>
+  <option>8F</option>
+</select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Event / Society</label>
+              <select class="form-select">
+                <option value="">Select Event</option>
+                <option>HackFAST 2026 – Coding Society</option>
+                <option>CFD Gaming League – Gaming Society</option>
+                <option>Sports Gala 2026 – Sport Society</option>
+                <option>Daira Arts Expo – Arts Society</option>
+                <option>MUN 2026 – Debate Society</option>
+                <option>AI Expo – AI &amp; Robotics Society</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Phone Number</label>
+              <input type="tel" class="form-control" placeholder="+92 3XX XXXXXXX" />
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Suggestion / Message</label>
+              <textarea class="form-control" rows="3"
+                placeholder="Any suggestions for the event team? We'd love to hear!"></textarea>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="agreeCheck" />
+                <label class="form-check-label" for="agreeCheck">
+                  I agree to the <a href="#" class="text-success">university code of conduct</a> for student activities.
+                </label>
+              </div>
+            </div>
+            <div class="col-12 mt-2">
+              <button class="btn btn-success fw-bold px-5 py-2"
+                      data-bs-toggle="modal" data-bs-target="#successModal">
+                Submit Registration ✓
+              </button>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <p class="small text-muted mb-0">
+            📧 For queries: <a href="mailto:fastcfd@nu.edu.pk" class="text-success fw-semibold">fastcfd@nu.edu.pk</a>
+            &nbsp;|&nbsp; 📍 FAST-NU, Chiniot–Faisalabad Campus
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center" style="border-radius:16px;">
+      <div class="modal-body py-5">
+        <div style="font-size:4rem;">🎉</div>
+        <h4 class="fw-bold mt-3" style="font-family:'Syne',sans-serif;">Registration Submitted!</h4>
+        <p class="text-muted">Thank you for registering. Our team will confirm via your FAST email within 24 hours.</p>
+        <p class="small text-muted">Questions? Email us at <a href="mailto:fastcfd@nu.edu.pk">fastcfd@nu.edu.pk</a></p>
+        <button class="btn btn-success px-5 mt-2" data-bs-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     MEET THE TEAM
+════════════════════════════════════════════ -->
+<section class="container my-5" id="team">
+  <h2 class="section-title mb-4 text-center">Meet the Team</h2>
+
+  <div class="row g-4 text-center">
+
+    <!-- HASEEB -->
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:16px;">
+        <img src="images/haseeb.jpg" 
+             alt="Haseeb Zahid"
+             class="rounded-circle mx-auto mb-3 shadow"
+             style="width:120px; height:120px; object-fit:cover; object-position: top;">
+        <h5 class="fw-bold mb-1">Haseeb Zahid</h5>
+        <p class="text-muted small mb-2">Portal Lead & Coding Society Head</p>
+        <span class="badge bg-primary mb-2">23F-0644</span><br/>
+        <a href="mailto:23f0644@cfd.nu.edu.pk" class="small text-success">
+          23f0644@cfd.nu.edu.pk
+        </a>
+      </div>
+    </div>
+
+    <!-- SAAD -->
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:16px;">
+        <img src="images/saad.jpg" 
+             alt="Saad"
+             class="rounded-circle mx-auto mb-3 shadow"
+             style="width:120px; height:120px; object-fit:cover; object-position: center;">
+        <h5 class="fw-bold mb-1">Saad</h5>
+        <p class="text-muted small mb-2">Events Coordinator & Sports Head</p>
+        <span class="badge bg-success mb-2">23F-0526</span><br/>
+        <a href="mailto:23f0526@cfd.nu.edu.pk" class="small text-success">
+          23f0526@cfd.nu.edu.pk
+        </a>
+      </div>
+    </div>
+
+    <!-- FAHAD -->
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:16px;">
+        <img src="images/fahad.jpg" 
+             alt="Fahad Saleem"
+             class="rounded-circle mx-auto mb-3 shadow"
+             style="width:120px; height:120px; object-fit:cover; object-position: center;">
+        <h5 class="fw-bold mb-1">Fahad Saleem</h5>
+        <p class="text-muted small mb-2">Arts Society & Daira Expo Lead head</p>
+        <span class="badge bg-danger mb-2">23F-0510</span><br/>
+        <a href="mailto:23f0510@cfd.nu.edu.pk" class="small text-success">
+          23f0510@cfd.nu.edu.pk
+        </a>
+      </div>
+    </div>
+
+    <!-- ALI REHMAN -->
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:16px;">
+        <img src="images/ali.jpg" 
+             alt="Ali Rehman"
+             class="rounded-circle mx-auto mb-3 shadow"
+             style="width:120px; height:120px; object-fit:cover; object-position: center;">
+        <h5 class="fw-bold mb-1">Ali Rehman</h5>
+        <p class="text-muted small mb-2">CFD Gaming League Organiser head</p>
+        <span class="badge bg-warning text-dark mb-2">23F-0727</span><br/>
+        <a href="mailto:23f0727@cfd.nu.edu.pk" class="small text-success">
+          23f0727@cfd.nu.edu.pk
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ════════════════════════════════════════════
+     CONTACT — TASK 6 spacing utilities applied
+════════════════════════════════════════════ -->
+<section id="contact" class="container-fluid py-5" style="background:#eef2f7;">
+  <div class="container">
+    <h2 class="section-title mb-4">Get in Touch</h2>
+    <div class="row g-4">
+
+      <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100 p-4" style="border-radius:16px;">
+          <h5 class="fw-bold mb-3" style="font-family:'Syne',sans-serif;">Contact Information</h5>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="mb-3">📧 <strong>Official Email:</strong><br/>
+              <a href="mailto:fastcfd@nu.edu.pk" class="text-success fw-semibold">fastcfd@nu.edu.pk</a>
+            </li>
+            <li class="mb-3">📍 <strong>Campus:</strong><br/>
+              FAST-NU, Chiniot–Faisalabad Campus, Pakistan
+            </li>
+            <li class="mb-3">👤 <strong>Portal Lead:</strong><br/>
+              Haseeb Zahid — <a href="mailto:23f0644@cfd.nu.edu.pk" class="text-success">23f0644@cfd.nu.edu.pk</a>
+            </li>
+            <li class="mb-3">👤 <strong>Events Coordinator:</strong><br/>
+              sami saeed  — <a href="mailto:23f0642@cfd.nu.edu.pk" class="text-success">23f642@cfd.nu.edu.pk</a>
+            </li>
+          </ul>
+          <!-- TASK 6: spacing utilities -->
+          <div class="mt-3 pt-2 mb-3">
+            <div class="alert alert-success py-2 small">
+              📢 Office hours: Mon–Fri, 10am–4pm (Block A, Room 102)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100 p-4" style="border-radius:16px;">
+          <h5 class="fw-bold mb-3" style="font-family:'Syne',sans-serif;">Send a Message</h5>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Your Name</label>
+            <input type="text" class="form-control" placeholder="Your full name" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" class="form-control" placeholder="your@email.com" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Message</label>
+            <textarea class="form-control" rows="4" placeholder="How can we help you?"></textarea>
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-success fw-bold px-4">Send Message</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="py-4 mt-0">
+  <div class="container">
+    <div class="row g-3 align-items-center">
+      <div class="col-12 col-md-5">
+        <p class="fw-bold mb-1" style="font-family:'Syne',sans-serif; color:var(--nu-gold);">
+          ⚡ FAST CFD Student Activity Portal 2026
+        </p>
+        <p class="small mb-0">
+          FAST-NU · Chiniot–Faisalabad Campus . Spring 2026
+        </p>
+      </div>
+      <div class="col-12 col-md-4">
+        <p class="small mb-1">📧 <a href="mailto:fastcfd@nu.edu.pk">fastcfd@nu.edu.pk</a></p>
+        <p class="small mb-0">BSCS 6F </p>
+      </div>
+      <div class="col-12 col-md-3 text-md-end">
+        <div class="btn-group btn-group-sm">
+          <a href="#home" class="btn btn-outline-secondary">Home</a>
+          <a href="#events" class="btn btn-outline-secondary">Events</a>
+          <a href="#register" class="btn btn-outline-secondary">Register</a>
+          <a href="#contact" class="btn btn-outline-secondary">Contact</a>
+        </div>
+      </div>
+    </div>
+    <hr style="border-color:#ffffff22;" />
+    <p class="text-center small mb-0">© 2026 FAST-NU CFD · Developed by Haseeb</p>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
